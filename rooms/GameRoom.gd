@@ -49,19 +49,19 @@ func get_exit_description() -> String:
 	return "Exits: " + PoolStringArray(exits.keys()).join(" ")
 
 
-func connect_exit(direction: String, room ):
+func connect_exit(direction: String, room: GameRoom):
 	var exit = Exit.new()
 	exit.room_1 = self
 	exit.room_2 = room
 	exits[direction] = exit
 	match direction:
 		"west":
-			room.exits["east"] = self
+			room.exits["east"] = exit
 		"east":
-			room.exits["west"] = self
+			room.exits["west"] = exit
 		"north":
-			room.exits["south"] = self
+			room.exits["south"] = exit
 		"south":
-			room.exits["north"] = self
+			room.exits["north"] = exit
 		_:
 			printerr("Tried to connect invalid direction: %s", direction)
