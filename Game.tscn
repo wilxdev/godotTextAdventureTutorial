@@ -1,0 +1,120 @@
+[gd_scene load_steps=12 format=2]
+
+[ext_resource path="res://input/Input.gd" type="Script" id=1]
+[ext_resource path="res://fonts/plex_mono_28.tres" type="DynamicFont" id=2]
+[ext_resource path="res://Game.gd" type="Script" id=3]
+[ext_resource path="res://CommandProcessor.gd" type="Script" id=4]
+[ext_resource path="res://rooms/GameRoom.tscn" type="PackedScene" id=5]
+[ext_resource path="res://rooms/RoomManager.gd" type="Script" id=6]
+[ext_resource path="res://Player.gd" type="Script" id=7]
+
+[sub_resource type="StyleBoxFlat" id=1]
+bg_color = Color( 0.0666667, 0.0509804, 0.0509804, 1 )
+
+[sub_resource type="StyleBoxFlat" id=2]
+bg_color = Color( 0.0666667, 0.0509804, 0.0509804, 1 )
+
+[sub_resource type="StyleBoxEmpty" id=4]
+
+[sub_resource type="StyleBoxEmpty" id=3]
+
+[node name="Game" type="Control"]
+anchor_right = 1.0
+anchor_bottom = 1.0
+script = ExtResource( 3 )
+
+[node name="Player" type="Node" parent="."]
+script = ExtResource( 7 )
+
+[node name="CommandProcessor" type="Node" parent="."]
+script = ExtResource( 4 )
+
+[node name="RoomManager" type="Node" parent="."]
+script = ExtResource( 6 )
+
+[node name="HouseRoom" parent="RoomManager" instance=ExtResource( 5 )]
+margin_left = 62.0
+margin_top = -321.0
+margin_right = 312.0
+margin_bottom = -121.0
+room_name = "A dark room"
+room_description = "The room is pitch black. "
+
+[node name="OutsideRoom" parent="RoomManager" instance=ExtResource( 5 )]
+margin_left = 386.0
+margin_top = -316.0
+margin_right = 636.0
+margin_bottom = -116.0
+room_name = "Outside"
+room_description = "You're now outside the house."
+
+[node name="Background" type="PanelContainer" parent="."]
+anchor_right = 1.0
+anchor_bottom = 1.0
+custom_styles/panel = SubResource( 1 )
+
+[node name="MarginContainer" type="MarginContainer" parent="Background"]
+margin_right = 1024.0
+margin_bottom = 600.0
+custom_constants/margin_right = 20
+custom_constants/margin_top = 20
+custom_constants/margin_left = 20
+custom_constants/margin_bottom = 20
+
+[node name="Rows" type="VBoxContainer" parent="Background/MarginContainer"]
+margin_left = 20.0
+margin_top = 20.0
+margin_right = 1004.0
+margin_bottom = 580.0
+custom_constants/separation = 0
+
+[node name="GamesInfo" type="PanelContainer" parent="Background/MarginContainer/Rows"]
+margin_right = 984.0
+margin_bottom = 500.0
+size_flags_vertical = 3
+
+[node name="ScrollContainer" type="ScrollContainer" parent="Background/MarginContainer/Rows/GamesInfo"]
+margin_left = 7.0
+margin_top = 7.0
+margin_right = 977.0
+margin_bottom = 493.0
+scroll_horizontal_enabled = false
+
+[node name="History" type="VBoxContainer" parent="Background/MarginContainer/Rows/GamesInfo/ScrollContainer"]
+margin_right = 970.0
+margin_bottom = 486.0
+size_flags_horizontal = 3
+size_flags_vertical = 3
+custom_constants/separation = 20
+
+[node name="InputPanel" type="PanelContainer" parent="Background/MarginContainer/Rows"]
+margin_top = 500.0
+margin_right = 984.0
+margin_bottom = 560.0
+rect_min_size = Vector2( 0, 60 )
+custom_styles/panel = SubResource( 2 )
+
+[node name="HBoxContainer" type="HBoxContainer" parent="Background/MarginContainer/Rows/InputPanel"]
+margin_right = 984.0
+margin_bottom = 60.0
+
+[node name="Caret" type="Label" parent="Background/MarginContainer/Rows/InputPanel/HBoxContainer"]
+margin_top = 11.0
+margin_right = 51.0
+margin_bottom = 48.0
+custom_fonts/font = ExtResource( 2 )
+text = " > "
+
+[node name="Input" type="LineEdit" parent="Background/MarginContainer/Rows/InputPanel/HBoxContainer"]
+margin_left = 55.0
+margin_right = 984.0
+margin_bottom = 60.0
+size_flags_horizontal = 3
+custom_fonts/font = ExtResource( 2 )
+custom_styles/focus = SubResource( 4 )
+custom_styles/normal = SubResource( 3 )
+max_length = 48
+script = ExtResource( 1 )
+
+[connection signal="text_entered" from="Background/MarginContainer/Rows/InputPanel/HBoxContainer/Input" to="." method="_on_Input_text_entered"]
+[connection signal="text_entered" from="Background/MarginContainer/Rows/InputPanel/HBoxContainer/Input" to="Background/MarginContainer/Rows/InputPanel/HBoxContainer/Input" method="_on_Input_text_entered"]
